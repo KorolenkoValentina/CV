@@ -375,10 +375,20 @@ body[data-theme='dark'] .contact-card {
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-x;
+  cursor: grab;
 }
 
 .tabs-row::-webkit-scrollbar {
   display: none;
+}
+
+.tabs-row:active,
+.tabs-row.is-dragging {
+  cursor: grabbing;
+}
+
+.tabs-row.is-dragging {
+  user-select: none;
 }
 
 .tab-button {

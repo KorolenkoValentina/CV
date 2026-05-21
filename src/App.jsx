@@ -72,13 +72,12 @@ const techSkills = [
 ];
 
 const softSkills = [
-  'Communication & teamwork',
-  'Adaptability & time management',
-  'Creativity & critical thinking',
-  'Learning agility & multitasking',
-  'Mentoring & trainee support',
-  'Patient & receptive to feedback',
-  'Attention to detail & problem solving',
+  'Communication & Teamwork',
+  'Leadership & Critical Thinking',
+  'Mentoring & Trainee support',
+  'Adaptability & Time Management',
+  'Learning Agility & Multitasking',
+  'Attention to Detail & Problem Solving',
 ];
 
 const languages = [
@@ -90,13 +89,14 @@ const experience = [
   {
     company: 'SoftGeneration',
     period: '2024 — present',
-    role: 'React Native Developer',
+    role: 'Front-end/Mobile/Shopify Developer',
     bullets: [
-      'Built mobile applications for iOS and Android with React Native.',
-      'Worked with native modules and platform integrations in Java/Kotlin and Objective-C/Swift.',
-      'Integrated backend services via REST API and GraphQL.',
-      'Provided Shopify website support and ongoing maintenance.',
-      'Used Firebase, push notifications, App Store, and Google Play related services.',
+      'Built web and mobile business applications.',
+      'Provided product leadership and team mentoring.',
+      'Worked with native modules and platform integrations using Java/Kotlin and Objective-C/Swift.',
+      'Integrated backend services via REST APIs and GraphQL.',
+      'Managed mobile application deployment, release processes, and maintenance across the App Store and Google Play.',
+      'Experienced in app publishing workflows, store compliance, versioning, and production release coordination.',
     ],
   },
   {
@@ -113,9 +113,8 @@ const experience = [
     period: '2022 — 2024',
     role: 'Front-End Developer',
     bullets: [
-      'Delivered front-end and React Native study and portfolio projects.',
-      'Completed advanced training in React Native, JavaScript/TypeScript, and Front-end Pro tracks.',
-      'Built responsive interfaces with a focus on UX, structure, and maintainable code.',
+      'Built web and mobile applications.',
+      'Provided Shopify maintenance, support, and ongoing platform updates.',
     ],
   },
   {
@@ -169,7 +168,7 @@ const projects = [
   {
     name: 'Completed Works',
     stack: 'Shopify, Site Builder, Website Support',
-    href: 'https://completedworks.com/?srsltid=AfmBOoqS_UMzEPD8GmkCam7Tkf7EgsIt9DNwawbLaHr_terBLlu-WKhj',
+    href: 'https://completedworks.com/',
   },
   {
     name: "What's That Patch",
@@ -302,7 +301,7 @@ function SectionTitle({ eyebrow, title }) {
 }
 
 function App() {
-  const { useEffect, useState } = React;
+  const { useEffect, useRef, useState } = React;
   const [activeTab, setActiveTab] = useState('experience');
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined' && window.matchMedia) {
@@ -316,13 +315,49 @@ function App() {
     document.body.dataset.theme = theme;
   }, [theme]);
 
+  const tabsRowRef = useRef(null);
+  const dragStateRef = useRef({
+    isDown: false,
+    startX: 0,
+    scrollLeft: 0,
+  });
+
   const tabs = [
     { id: 'experience', label: 'Experience' },
-    { id: 'featured', label: 'Apps' },
-    { id: 'projects', label: 'Portfolio' },
+    { id: 'featured', label: 'Recent Mobile Apps' },
+    { id: 'projects', label: 'NDA-free Portfolio' },
     { id: 'education', label: 'Education' },
     { id: 'certificates', label: 'Certificates' },
   ];
+
+  const handleTabsPointerDown = (event) => {
+    const node = tabsRowRef.current;
+    if (!node) return;
+
+    dragStateRef.current = {
+      isDown: true,
+      startX: event.clientX,
+      scrollLeft: node.scrollLeft,
+    };
+    node.classList.add('is-dragging');
+  };
+
+  const handleTabsPointerMove = (event) => {
+    const node = tabsRowRef.current;
+    const drag = dragStateRef.current;
+    if (!node || !drag.isDown) return;
+
+    const delta = event.clientX - drag.startX;
+    node.scrollLeft = drag.scrollLeft - delta;
+  };
+
+  const handleTabsPointerUp = () => {
+    const node = tabsRowRef.current;
+    dragStateRef.current.isDown = false;
+    if (node) {
+      node.classList.remove('is-dragging');
+    }
+  };
 
   return (
     <main className="page-shell">
@@ -385,7 +420,7 @@ function App() {
           </ul>
           <div className="contact-note">
             <strong>Focus</strong>
-            <p>Front-end development, React Native products, Shopify Solutions, teaching, and long-term product support.</p>
+            <p>Front-end development, React Native products, Shopify solutions, teaching, and long-term product support.</p>
           </div>
         </aside>
       </section>
@@ -395,7 +430,16 @@ function App() {
           <section className="panel">
             <SectionTitle eyebrow="Overview" title="Main Sections" />
             <div className="tabs-shell">
-              <div className="tabs-row" role="tablist" aria-label="Resume sections">
+              <div
+                ref={tabsRowRef}
+                className="tabs-row"
+                role="tablist"
+                aria-label="Resume sections"
+                onPointerDown={handleTabsPointerDown}
+                onPointerMove={handleTabsPointerMove}
+                onPointerUp={handleTabsPointerUp}
+                onPointerLeave={handleTabsPointerUp}
+              >
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
