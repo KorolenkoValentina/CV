@@ -12,7 +12,7 @@ const contacts = [
   {
     label: 'LinkedIn',
     value: 'valentina-krivda',
-    href: 'https://www.linkedin.com/in/valentina-krivda/',
+    href: 'https://www.linkedin.com/in/valentina-diachenko?utm_source=share_via&utm_content=profile&utm_medium=member_android',
   },
 ];
 
@@ -343,12 +343,9 @@ function App() {
             <div className="hero-text">
               <p className="eyebrow">Resume / Front-End / Mobile / Shopify</p>
               <h1>Valentina Krivda</h1>
-              <p className="role">Front-End Developer / React Native Developer / Shopify Support</p>
+              <p className="role">Front-End Web Development / React Native Mobile Apps / Shopify Solutions</p>
               <p className="summary">
-                Passionate about technology and eager to learn, I am always exploring
-                new opportunities to diversify my knowledge. I work effectively both
-                in a team and independently, and I focus on building clear, useful,
-                high-quality digital experiences.
+               Passionate about technology, continuous learning, and staying aligned with the evolving digital landscape. Constantly exploring new opportunities to expand expertise across emerging technologies and innovation trends. Effective both independently and within cross-functional teams, with a strong focus on building clear, impactful, and high-quality digital solutions that deliver real business value
               </p>
               <div className="hero-highlight-list">
                 {heroHighlights.map((item) => (
@@ -388,7 +385,7 @@ function App() {
           </ul>
           <div className="contact-note">
             <strong>Focus</strong>
-            <p>Front-end development, React Native products, teaching, and long-term product support.</p>
+            <p>Front-end development, React Native products, Shopify Solutions, teaching, and long-term product support.</p>
           </div>
         </aside>
       </section>
