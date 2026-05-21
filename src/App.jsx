@@ -302,10 +302,43 @@ function SectionTitle({ eyebrow, title }) {
 }
 
 function App() {
+  const { useEffect, useState } = React;
+  const [activeTab, setActiveTab] = useState('experience');
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    return 'light';
+  });
+
+  useEffect(() => {
+    document.body.dataset.theme = theme;
+  }, [theme]);
+
+  const tabs = [
+    { id: 'experience', label: 'Experience' },
+    { id: 'featured', label: 'Apps' },
+    { id: 'projects', label: 'Portfolio' },
+    { id: 'education', label: 'Education' },
+    { id: 'certificates', label: 'Certificates' },
+  ];
+
   return (
     <main className="page-shell">
       <section className="hero">
         <div className="hero-copy">
+          <div className="hero-toolbar">
+            <span className="status-pill">Available for React Native and Front-end roles</span>
+            <button
+              className="theme-toggle"
+              type="button"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            >
+              {theme === 'dark' ? 'Light mode' : 'Dark mode'}
+            </button>
+          </div>
+
           <div className="hero-head">
             <div className="hero-text">
               <p className="eyebrow">Resume / Front-End / Mobile / Shopify</p>
@@ -363,89 +396,134 @@ function App() {
       <section className="content-grid">
         <div className="main-column">
           <section className="panel">
-            <SectionTitle eyebrow="Career" title="Work Experience" />
-            <div className="timeline">
-              {experience.map((item) => (
-                <article className="timeline-item" key={`${item.company}-${item.period}`}>
-                  <div className="timeline-meta">
-                    <p>{item.period}</p>
-                  </div>
-                  <div className="timeline-body">
-                    <h3>{item.company}</h3>
-                    <p className="timeline-role">{item.role}</p>
-                    {item.bullets.length > 0 && (
-                      <ul>
-                        {item.bullets.map((bullet) => (
-                          <li key={bullet}>{bullet}</li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
+            <SectionTitle eyebrow="Overview" title="Main Sections" />
+            <div className="tabs-shell">
+              <div className="tabs-row" role="tablist" aria-label="Resume sections">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    role="tab"
+                    className={`tab-button${activeTab === tab.id ? ' is-active' : ''}`}
+                    aria-selected={activeTab === tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
 
-          <section className="panel">
-            <SectionTitle eyebrow="Apps" title="Featured Projects" />
-            <div className="featured-projects">
-              {featuredProjects.map((project) => (
-                <a
-                  className="featured-project-card"
-                  key={project.name}
-                  href={project.href}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <div className="featured-project-top">
-                    <span className="featured-project-label">Google Play</span>
-                    <h3>{project.name}</h3>
-                    <p className="featured-project-role">{project.role}</p>
+              <div className="tab-panel">
+                {activeTab === 'experience' && (
+                  <div className="timeline">
+                    {experience.map((item) => (
+                      <article className="timeline-item" key={`${item.company}-${item.period}`}>
+                        <div className="timeline-meta">
+                          <p>{item.period}</p>
+                        </div>
+                        <div className="timeline-body">
+                          <h3>{item.company}</h3>
+                          <p className="timeline-role">{item.role}</p>
+                          {item.bullets.length > 0 && (
+                            <ul>
+                              {item.bullets.map((bullet) => (
+                                <li key={bullet}>{bullet}</li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      </article>
+                    ))}
                   </div>
-                  <p className="featured-project-description">{project.description}</p>
-                  <div className="featured-project-stack">
-                    <strong>Технології:</strong>
-                    <span>{project.stack}</span>
+                )}
+
+                {activeTab === 'featured' && (
+                  <div className="featured-projects">
+                    {featuredProjects.map((project) => (
+                      <a
+                        className="featured-project-card"
+                        key={project.name}
+                        href={project.href}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <div className="featured-project-top">
+                          <span className="featured-project-label">Google Play</span>
+                          <h3>{project.name}</h3>
+                          <p className="featured-project-role">{project.role}</p>
+                        </div>
+                        <p className="featured-project-description">{project.description}</p>
+                        <div className="featured-project-stack">
+                          <strong>Технології:</strong>
+                          <span>{project.stack}</span>
+                        </div>
+                      </a>
+                    ))}
                   </div>
-                </a>
-              ))}
-            </div>
-          </section>
+                )}
 
-          <section className="panel">
-            <SectionTitle eyebrow="Proof" title="Certificates" />
-            <div className="certificates-grid">
-              {certificates.map((certificate, index) => (
-                <a
-                  className="certificate-card"
-                  key={`${certificate.href}-${index}`}
-                  href={certificate.href}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <span>{certificate.issuer}</span>
-                  <h3>{certificate.title}</h3>
-                  <p>Open certificate</p>
-                </a>
-              ))}
-            </div>
-          </section>
+                {activeTab === 'projects' && (
+                  <div className="projects-grid">
+                    {projects.map((project) => (
+                      <a
+                        className="project-card"
+                        key={project.name}
+                        href={project.href}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <h3>{project.name}</h3>
+                        <p>{project.stack}</p>
+                      </a>
+                    ))}
+                  </div>
+                )}
 
-          <section className="panel">
-            <SectionTitle eyebrow="Build" title="Selected Projects" />
-            <div className="projects-grid">
-              {projects.map((project) => (
-                <a
-                  className="project-card"
-                  key={project.name}
-                  href={project.href}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <h3>{project.name}</h3>
-                  <p>{project.stack}</p>
-                </a>
-              ))}
+                {activeTab === 'education' && (
+                  <div className="learning-column">
+                    <div className="subsection-heading">
+                      <span>Education</span>
+                      <h3>Where I studied</h3>
+                    </div>
+                    <div className="education-list">
+                      {education.map((item) => (
+                        <article key={`${item.place}-${item.period}`}>
+                          <h3>{item.place}</h3>
+                          <p>{item.focus}</p>
+                          <span>{item.period}</span>
+                        </article>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'certificates' && (
+                  <div className="learning-column">
+                    <div className="subsection-heading">
+                      <span>Certificates</span>
+                      <h3>Courses and proof</h3>
+                    </div>
+                    <div className="certificates-grid">
+                      {certificates.map((certificate, index) => (
+                        <a
+                          className="certificate-card"
+                          key={`${certificate.href}-${index}`}
+                          href={certificate.href}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <span>{certificate.issuer}</span>
+                          <h3>{certificate.title}</h3>
+                          <p className="certificate-link">
+                            Open certificate
+                            <span aria-hidden="true">↗</span>
+                          </p>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </section>
         </div>
@@ -469,19 +547,6 @@ function App() {
                 <li key={skill}>{skill}</li>
               ))}
             </ul>
-          </section>
-
-          <section className="panel">
-            <SectionTitle eyebrow="Study" title="Education" />
-            <div className="education-list">
-              {education.map((item) => (
-                <article key={`${item.place}-${item.period}`}>
-                  <h3>{item.place}</h3>
-                  <p>{item.focus}</p>
-                  <span>{item.period}</span>
-                </article>
-              ))}
-            </div>
           </section>
 
           <section className="panel">
