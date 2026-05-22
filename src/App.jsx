@@ -186,6 +186,16 @@ const projects = [
     href: 'https://github.com/KorolenkoValentina/ReactNative',
   },
   {
+    name: 'Travel Project',
+    stack: 'React',
+    href: 'https://travell-project.netlify.app',
+  },
+  {
+    name: 'Createx',
+    stack: 'React',
+    href: 'https://createx-p34.netlify.app',
+  },
+  {
     name: 'XScale',
     stack: 'React, TypeScript, Unit Test',
     href: 'https://xscale.netlify.app/',
@@ -204,11 +214,6 @@ const projects = [
     name: 'Biotech',
     stack: 'HTML5, CSS3, JavaScript',
     href: 'https://korolenkovalentina.github.io/Biotech/',
-  },
-  {
-    name: 'Alivio',
-    stack: 'HTML5, CSS3, JavaScript',
-    href: 'https://korolenkovalentina.github.io/Alivio/',
   },
   {
     name: 'MasterTao',
