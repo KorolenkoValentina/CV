@@ -26,7 +26,7 @@ const heroHighlights = [
 
 const quickFacts = [
   { value: '3+', label: 'Years in tech' },
-  { value: '15', label: 'Projects in portfolio' },
+  { value: '16', label: 'Projects in portfolio' },
   { value: '7', label: 'Certificates added' },
 ];
 
